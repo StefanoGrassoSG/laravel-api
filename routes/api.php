@@ -18,14 +18,20 @@ use App\Http\Controllers\Api\ProjectController;
 */
 
 Route::name('api.')->group(function () {
-    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-        return $request->user();
-    });
+   // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+   //     return $request->user();
+   // });
 
-    Route::name('projects.')
-        ->group(function () {
-        Route::get('/projects', [ProjectController::class, 'index'])->name('index');
-        Route::get('/projects', [ProjectController::class, 'show'])->name('show');
-    });
+    //Route::name('projects.')
+    //    ->prefix('projects')
+    //    ->group(function () {
+    //    Route::get('/', [ProjectController::class, 'index'])->name('index');
+    //    Route::get('/{project}', [ProjectController::class, 'show'])->name('show');
+    //});
+
+    Route::resource('projects', ProjectController::class)->only([
+        'index',
+        'show'
+    ]);
 });
 
