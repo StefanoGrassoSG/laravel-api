@@ -12,21 +12,45 @@ class ProjectController extends Controller
 {
     public function index() {
 
-        $projects = Project::all();
+        $projects = Project::with('type', 'technologies')->paginate(4);
 
-        return response()->json([
-            'success' => true,
-            'results' => $projects
-        ]);
+        if($projects) {
+            return response()->json([
+                'code' => 200,
+                'success' => true,
+                'message' => 'Ok',
+                'results' => $projects
+            ]);
+        }
+        else {
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'projects not founds',
+            ]);
+        }
+
+        
     }
 
     public function show(string $slug) {
 
-        $project = Project::where('slug', $slug)->firstOrFail();
+        $project = Project::where('slug', $slug)->first();
 
-        return response()->json([
-            'success' => true,
-            'results' => $project
-        ]);
+        if($project) {
+            return response()->json([
+                'code' => 200,
+                'success' => true,
+                'message' => 'Ok',
+                'results' => $project
+            ]);
+        }
+        else {
+            return response()->json([
+                'code' => 404,
+                'success' => false,
+                'message' => 'project not found',
+            ]);
+        }
     }
 }
