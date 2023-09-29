@@ -36,16 +36,9 @@ class ProjectSeeder extends Seeder
         foreach ($projects as $project) {
             $slug = str()->slug($project['name']);
             $imgPath = null;
-            if (fake()->boolean()) {
-                $imgPath = fake()->image(storage_path('app/public/uploads/projects'), 480, 480, 'music', false);
-                if ($imgPath && $imgPath != '') {
-                    $imgPath = 'uploads/projects/'.$imgPath;
-                }
-                else {
-                    $imgPath = null;
-                }
-            }
-    
+
+            $imgPath = fake()->imageUrl();
+            $imgPath = 'uploads/projects/'.$imgPath;
 
             Project::create([
                 'name' => $project['name'],
