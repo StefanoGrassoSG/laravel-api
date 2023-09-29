@@ -38,7 +38,7 @@ class ProjectSeeder extends Seeder
             $imgPath = null;
 
             $imgPath = fake()->imageUrl();
-            $imgPath = 'uploads/projects/'.$imgPath;
+
 
             Project::create([
                 'name' => $project['name'],
