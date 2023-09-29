@@ -8,6 +8,11 @@ use Illuminate\Database\Seeder;
 //models
 use App\Models\Project;
 
+// Helpers
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
+
+
 class ProjectSeeder extends Seeder
 {
     /**
@@ -15,12 +20,33 @@ class ProjectSeeder extends Seeder
      */
     public function run(): void
     {
-        Project::truncate();
+        Schema::withoutForeignKeyConstraints(function () {
+            Project::truncate();
+        });
+
+        if (Storage::disk('public')->exists('uploads/projects')) {
+            Storage::disk('public')->deleteDirectory('uploads/projects');
+        }
+        Storage::disk('public')->makeDirectory('uploads/projects');
+
 
         $projects = config('projects');
+        
 
         foreach ($projects as $project) {
             $slug = str()->slug($project['name']);
+            $imgPath = null;
+            if (fake()->boolean()) {
+                $imgPath = fake()->image(storage_path('app/public/uploads/projects'), 480, 480, 'music', false);
+                if ($imgPath && $imgPath != '') {
+                    $imgPath = 'uploads/projects/'.$imgPath;
+                }
+                else {
+                    $imgPath = null;
+                }
+            }
+    
+
             Project::create([
                 'name' => $project['name'],
                 'slug' => $slug,
@@ -29,7 +55,8 @@ class ProjectSeeder extends Seeder
                 'end_date' => $project['end_date'],
                 'project_status' => $project['project_status'],
                 'project_link' => $project['project_link'],
-                'type_id' => $project['type_id']
+                'type_id' => $project['type_id'],
+                'cover_img' => $imgPath
             ]);
         }
     }

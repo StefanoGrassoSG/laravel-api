@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('end_date')->nullable();
             $table->string('project_status', 32);
             $table->string('project_link', 2083);
+            $table->string('cover_img', 2048)->nullable();
             $table->timestamps();
         });
     }
