@@ -39,6 +39,13 @@ class ProjectSeeder extends Seeder
 
             $imgPath = fake()->imageUrl();
 
+            $imgContent = file_get_contents($imgPath);
+
+            $newImagePath = storage_path('app/public/uploads/projects');
+            $newImageName = rand(1000, 9999).'-'.rand(1000, 9999).'-'.rand(1000, 9999).'.png';
+            $fullNewImagePath = $newImagePath.'/'.$newImageName;
+
+            file_put_contents($fullNewImagePath, $imgContent);
 
             Project::create([
                 'name' => $project['name'],
@@ -49,7 +56,7 @@ class ProjectSeeder extends Seeder
                 'project_status' => $project['project_status'],
                 'project_link' => $project['project_link'],
                 'type_id' => $project['type_id'],
-                'cover_img' => $imgPath
+                'cover_img' => 'uploads/projects/' . $newImageName
             ]);
         }
     }

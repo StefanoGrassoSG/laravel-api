@@ -21,8 +21,23 @@ class Project extends Model
         'project_status',
         'languages',
         'project_link',
-        'type_id'
+        'type_id',
+        'cover_img'
     ];
+
+    protected $appends = [
+        'full_cover_img'
+    ];
+
+    public function getFullCoverImgAttribute()
+    {
+        if ($this->cover_img) {
+            return asset('storage/'.$this->cover_img);
+        }
+        else {
+            return null;
+        }
+    }
 
      //RELATIONSHIPS
 
